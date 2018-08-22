@@ -50,8 +50,13 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.5)
 def train(epoch):
     for batch_idx, (data, target) in enumerate(train_loader):
         data,target = Variable(data), Variable(target)
+        print(target.size())
         optimizer.zero_grad()
         output = model(data)
+        print(output.size())
+        print(output)
+        print(target)
+        break
         loss = F.nll_loss(output, target)
         loss.backward()
         optimizer.step()
@@ -65,6 +70,7 @@ def test():
     for data, target in test_loader:
         data, target = Variable(data, volatile=True), Variable(target)
         output = model(data)
+        
         # sum up batch loss
         test_loss += F.nll_loss(output, target, size_average=False).data[0]
         # get the index of the max log-probability
@@ -79,4 +85,4 @@ def test():
 if __name__ == "__main__":
     for epoch in range(1,10):
         train(epoch)
-        test()
+        #test()
