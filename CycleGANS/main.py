@@ -138,12 +138,15 @@ def train(config):
             g_optimer.step()
             fake_w_image =  vutils.make_grid(fake_w_image, normalize=False, scale_each=False)
             fake_m_image =  vutils.make_grid(fake_m_image, normalize=False, scale_each=False)
+            
             writer.add_scalar(tag='loss/g_MWM_loss',scalar_value=g_MWM_loss,global_step=global_step)
             writer.add_scalar(tag='loss/g_WMW_loss',scalar_value=g_WMW_loss,global_step=global_step)
             writer.add_scalar(tag='loss/d_fake_loss',scalar_value=d_fake_loss,global_step=global_step)
             writer.add_scalar(tag='loss/d_real_loss',scalar_value=d_real_loss,global_step=global_step)
-            writer.add_image('iamge/fake_w_image',fake_w_image,global_step)
-            writer.add_image('iamge/fake_m_image',fake_m_image,global_step)
+            writer.add_image('image/fake_w_image',fake_w_image,global_step)
+            writer.add_image('image/fake_m_image',fake_m_image,global_step)
+            writer.add_image('image/M_image',M_image,global_step)
+            M_image
             print("{}\n".format(global_step))
             global_step += 1
     writer.close()
