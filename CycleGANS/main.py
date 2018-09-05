@@ -83,10 +83,10 @@ def train(config):
                 W_batched = W_data.__next__()
             except StopIteration:
                 break
-            M_image = to_cuda(M_batched['imagename']).type(torch.FloatTensor)
-            M_label = to_cuda(M_batched['age']).type(torch.LongTensor).squeeze()
-            W_image = to_cuda(W_batched['imagename']).type(torch.FloatTensor)
-            W_label = to_cuda(W_batched['age']).type(torch.LongTensor).squeeze()
+            M_image = M_batched['imagename'].type(torch.cuda.FloatTensor)
+            M_label = M_batched['age'].type(torch.cuda.LongTensor).squeeze()
+            W_image = W_batched['imagename'].type(torch.cuda.FloatTensor)
+            W_label = W_batched['age'].type(torch.cuda.LongTensor).squeeze()
             
             if W_label.size(0) != M_label.size(0):
                 break
@@ -94,7 +94,7 @@ def train(config):
             fake_label[:] = 10
             #fake_label[:,10] = 1
             fake_label = torch.from_numpy(fake_label)
-            fake_label = to_cuda(fake_label).type(torch.LongTensor)
+            fake_label = fake_label.type(torch.cuda.LongTensor)
             #print(M_label.type())
             '''print(fake_label.size())
             print("\n{}".format(W_label.view(W_label.size(0)*10)))
@@ -155,13 +155,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     #训练参数设置
     parser.add_argument('--epoch',type=int,default=1)
-    parser.add_argument('--batch_size',type=int,default=4)
+    parser.add_argument('--batch_size',type=int,default=32)
     parser.add_argument('--lr',type=float,default=0.0002)
 
     #保存参数设置
     parser.add_argument('--mode',type=str,default='train')
-    parser.add_argument('--root_dir',type=str,default='../data/UTKface/UTKface')
-    parser.add_argument('--csv_dir',type=str,default='../UTKFace.csv')
+    parser.add_argument('--root_dir',type=str,default='/home/zhc/Image/UTKFace/UTKFace')
+    parser.add_argument('--csv_dir',type=str,default='~/CODE/pytorchcode/UTKFace.csv')
     parser.add_argument('--log_dir',type=str,default='./log')
     
     config = parser.parse_args()
